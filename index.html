@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CeritaPeta.co.uk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        nav {
+            /* box-sizing: border-box; */
+            display: flex;
+            align-items: center;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        nav.mobilenav {
+            display: none
+        }
+        @media screen and (max-width: 600px) {
+        nav.mainnav {
+            display: none;
+        }
+        nav.mobilenav {
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: initial;
+        }
+        }
+        html {
+           height: 100%;
+        }
+        body {
+            margin: 0;
+            font-family: poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100%;
+        }
+        .flexbox {
+            display: flex;
+            flex-direction: row;
+            /* justify-content: center; */
+            align-items: center;
+            width: 100%;
+        }
+        .menu {
+            display: inline-block;
+            border: 0px solid aqua;
+            /* position: absolute; */
+            margin: 0 5px 0 5px;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background-color 0.5s;
+        }
+        .menu:hover {
+            background-color: rgb(228, 228, 253);
+            cursor: pointer;
+            color: rgb(115, 115, 255);
+        }
+    </style>
+    <script src='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'></script>
+    <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
+</head>
+<body>
+    <nav class="mainnav">
+        <!-- <div class="flexbox" style="width: fit-content; height: 100%; border: 0px solid blue"> -->
+            <div style="padding: 20px; width: fit-content; display: inline-block; border: 0px solid red; font-weight: bold;">CeritaPeta.co.uk</div>
+            <div class="menu">
+                Home
+            </div>
+            <div class="menu">
+                Tentang
+            </div>
+            <div class="menu">
+                Cerita
+            </div>
+        <!-- </div> -->
+        
+        
+    </nav>
+    <nav class="mobilenav">
+        <div style="padding: 20px; width: fit-content; display: inline-block; border: 0px solid red; font-weight: bold;">CeritaPeta.co.uk</div>
+        <div>
+            <div class="menu">
+                Home
+            </div>
+            <div class="menu">
+                Tentang
+            </div>
+            <div class="menu">
+                Cerita
+            </div>
+        </div>
+    </nav>
+    <div id='map' style='height: inherit; width: inherit;'></div>
+    <script>
+        var map = new maplibregl.Map({
+                    container: 'map',
+                    style:
+                    'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
+                    
+
+
+                    center: [106.827205, -6.177008],
+                    zoom: 15.5,
+                    pitch: 45,
+                    scrollZoom: false
+                    });
+                    
+                    function rotateCamera(timestamp) {
+                    // clamp the rotation between 0 -360 degrees
+                    // Divide timestamp by 100 to slow rotation to ~10 degrees / sec
+                    map.rotateTo((timestamp / 100) % 360, { duration: 0 });
+                    // Request the next frame of the animation.
+                    requestAnimationFrame(rotateCamera);
+                    }
+                    
+                    map.on('load', function () {
+                    // Start the animation.
+                    rotateCamera(0);
+                    
+                    // Add 3d buildings and remove label layers to enhance the map
+                    var layers = map.getStyle().layers;
+                    for (var i = 0; i < layers.length; i++) {
+                    if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                    // remove text labels
+                    map.removeLayer(layers[i].id);
+                    }
+                    }
+                    
+                    map.addLayer({
+                    'id': '3d-buildings',
+                    'source': 'composite',
+                    'source-layer': 'building',
+                    'filter': ['==', 'extrude', 'true'],
+                    'type': 'fill-extrusion',
+                    'minzoom': 15,
+                    'paint': {
+                    'fill-extrusion-color': '#aaa',
+                    
+                    // use an 'interpolate' expression to add a smooth transition effect to the
+                    // buildings as the user zooms in
+                    'fill-extrusion-height': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    15,
+                    0,
+                    15.05,
+                    ['get', 'height']
+                    ],
+                    'fill-extrusion-base': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    15,
+                    0,
+                    15.05,
+                    ['get', 'min_height']
+                    ],
+                    'fill-extrusion-opacity': 0.6
+                    }
+                    });
+                    }); 
+        </script>
+</body>
+</html>

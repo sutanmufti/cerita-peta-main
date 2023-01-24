@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CeritaPeta.co.uk</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
     <style>
         nav {
             /* box-sizing: border-box; */
@@ -67,9 +68,18 @@
             cursor: pointer;
             color: rgb(115, 115, 255);
         }
+
+        .maplibregl-popup-content {
+            background-color: transparent;
+            box-shadow: none;
+        }
+        .maplibregl-popup-tip {
+            background-color: transparent !important;
+            border-top-color: transparent !important; 
+        }
     </style>
+    <!-- <div class="maplibregl-popup-tip mapboxgl-popup-tip"></div> -->
     <script src='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'></script>
-    <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
 </head>
 <body>
     <nav class="mainnav">
@@ -111,11 +121,13 @@
                     
 
 
-                    center: [106.827205, -6.177008],
+                    center: [106.824831, -6.175345],
                     zoom: 15.5,
                     pitch: 45,
                     scrollZoom: false
                     });
+
+                    
                     
                     function rotateCamera(timestamp) {
                     // clamp the rotation between 0 -360 degrees
@@ -128,7 +140,19 @@
                     map.on('load', function () {
                     // Start the animation.
                     rotateCamera(0);
-                    
+                    const monas = new maplibregl.Marker().setLngLat([106.827141, -6.175480]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Monas")).addTo(map);
+                    const gambir = new maplibregl.Marker().setLngLat([106.83069706222626, -6.176791322269103, ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("St. Gambir")).addTo(map);
+                    const istiqlal = new maplibregl.Marker().setLngLat([106.8317445774833, -6.171109491700247,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Masjid Istiqlal")).addTo(map);
+                    const bundaranhi = new maplibregl.Marker().setLngLat([106.8231702624352, -6.194763302876742, ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Bundaran HI")).addTo(map);
+                    const ptanahabang = new maplibregl.Marker().setLngLat([106.8154448958971, -6.187192610309246,   ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Pasar Tanah Abang")).addTo(map);
+                    const kemenhan = new maplibregl.Marker().setLngLat([106.82136373859709 , -6.176855298771626,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Kementerian Pertahanan")).addTo(map);
+                    // const istiqlal = new maplibregl.Marker().setLngLat([106.8317445774833, -6.171109491700247,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Masjid Istiqlal")).addTo(map);
+                    monas.togglePopup();
+                    gambir.togglePopup();
+                    istiqlal.togglePopup()
+                    bundaranhi.togglePopup()
+                    ptanahabang.togglePopup()
+                    kemenhan.togglePopup()
                     // Add 3d buildings and remove label layers to enhance the map
                     var layers = map.getStyle().layers;
                     for (var i = 0; i < layers.length; i++) {

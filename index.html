@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
+    <link rel="icon" type="image/x-icon" href="./logo_rds.png">
     <style>
         nav {
             /* box-sizing: border-box; */
@@ -28,7 +29,28 @@
         nav.mobilenav {
             display: none
         }
+        .options {
+            top: 80px; 
+        }
+        .message-box {
+            /* position: absolute; */
+            /* top: 40%; */
+            display: block;
+            max-width: 400px;
+            height: 300px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.686);
+            padding: 10px;
+            box-shadow: 0 0 15px grey;
+            border-radius: 15px;
+        }
         @media screen and (max-width: 600px) {
+        .message-box{
+            max-width: 170px;
+            }
+        .options {
+            top: 140px
+        }
         nav.mainnav {
             display: none;
         }
@@ -77,6 +99,35 @@
             background-color: transparent !important;
             border-top-color: transparent !important; 
         }
+
+        
+
+        .flexbox2 {
+            display: flex;
+            position: absolute;
+            height: 100%;
+            margin: 20px;
+            width: fit-content;
+            top:0;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            /* background-color: red; */
+            z-index: 99;
+        }
+
+        .lihat {
+            border: none;
+            background-color: rgb(0, 63, 126);
+            border-radius: 15px;
+            padding: 15px;
+            color: white;
+            transition: box-shadow 0.5s;
+        }
+        .lihat:hover {
+            box-shadow: 0 0 20px rgb(0, 63, 126);
+            cursor: pointer;
+        }
     </style>
     <!-- <div class="maplibregl-popup-tip mapboxgl-popup-tip"></div> -->
     <script src='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'></script>
@@ -84,7 +135,9 @@
 <body>
     <nav class="mainnav">
         <!-- <div class="flexbox" style="width: fit-content; height: 100%; border: 0px solid blue"> -->
-            <div style="padding: 20px; width: fit-content; display: inline-block; border: 0px solid red; font-weight: bold;">CeritaPeta.co.uk</div>
+            <img src="./logo_rds.png" alt="" height="55em" style="margin: 0 0 0 15px;">
+            
+            <div style="padding: 0px; width: fit-content; display: inline-block; border: 0px solid red; font-weight: bold; margin-right: 20px; color: rgb(0, 63, 126)">@CeritaPeta.co.uk</div>
             <div class="menu">
                 Home
             </div>
@@ -99,8 +152,13 @@
         
     </nav>
     <nav class="mobilenav">
-        <div style="padding: 20px; width: fit-content; display: inline-block; border: 0px solid red; font-weight: bold;">CeritaPeta.co.uk</div>
-        <div>
+        <div style="display: flex; text-align: left; justify-content: center; align-items: center">
+            <img src="./logo_rds.png" alt="" height="55em" style="margin: 0 0 0 15px;">
+            
+            <div style="padding: 0px; width: fit-content; display: inline-block; border: 0px solid red; font-weight: bold; margin-right: 20px; color: rgb(0, 63, 126)">@CeritaPeta.co.uk</div>
+            
+        </div>
+        <div style="display: flex; text-align: left; justify-content: center; align-items: center">
             <div class="menu">
                 Home
             </div>
@@ -113,7 +171,47 @@
         </div>
     </nav>
     <div id='map' style='height: inherit; width: inherit;'></div>
+
+
+    <!-- <div style="position: absolute; right: 0" class="options">
+        options
+    </div> -->
+    <div class="flexbox2">
+        <div class="message-box">
+            <img src="./logo_rds.png" alt="" height="100em" style="margin: 0 0 0 0;"> <br>
+            <p style="color: rgb(0, 63, 126); margin-top: 0px; font-weight: bolder;">
+                CeritaPeta.co.uk 
+            </p>
+            <p style="color: grey">
+                CeritaPeta.co.uk merupakan wadah proyek front-end Rekayasa Data Spasial. Ada peta di semua cerita.
+            </p>
+            <p>
+                <button class="lihat" onclick="clicked()">
+                    Lihat Cerita
+                </button>
+            </p>
+            
+        </div>
+    </div>
     <script>
+        let rotate = true
+
+
+        const monas = new maplibregl.Marker().setLngLat([106.827141, -6.175480]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Monas"))
+        const gambir = new maplibregl.Marker().setLngLat([106.83069706222626, -6.176791322269103, ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("St. Gambir"))
+        const istiqlal = new maplibregl.Marker().setLngLat([106.8317445774833, -6.171109491700247,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Masjid Istiqlal"))
+        const bundaranhi = new maplibregl.Marker().setLngLat([106.8231702624352, -6.194763302876742, ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Bundaran HI"))
+        const ptanahabang = new maplibregl.Marker().setLngLat([106.8154448958971, -6.187192610309246,   ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Pasar Tanah Abang"))
+        const kemenhan = new maplibregl.Marker().setLngLat([106.82136373859709 , -6.176855298771626,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Kementerian Pertahanan"))
+        // const istiqlal = new maplibregl.Marker().setLngLat([106.8317445774833, -6.171109491700247,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Masjid Istiqlal")).addTo(map);
+        // monas.togglePopup();
+        // gambir.togglePopup();
+        // istiqlal.togglePopup()
+        // bundaranhi.togglePopup()
+        // ptanahabang.togglePopup()
+        // kemenhan.togglePopup()
+
+
         var map = new maplibregl.Map({
                     container: 'map',
                     style:
@@ -134,25 +232,31 @@
                     // Divide timestamp by 100 to slow rotation to ~10 degrees / sec
                     map.rotateTo((timestamp / 100) % 360, { duration: 0 });
                     // Request the next frame of the animation.
-                    requestAnimationFrame(rotateCamera);
+                    if (rotate) {
+                        requestAnimationFrame(rotateCamera)
+                    } else {
+                        map.flyTo({center: [114.40619900252072, -1.7662719317692572, ], zoom: 4, pitch: 0, bearing: 0, duration: 2000});
+                        setTimeout(() => {
+  console.log("Delayed for 1 second.");
+  window.location = 'https://ceritapeta.co.uk/tentang';
+}, "2500")
+
+                        
+                        // [106.94217277834228, -6.161429339751701]
+                    };
                     }
                     
                     map.on('load', function () {
                     // Start the animation.
                     rotateCamera(0);
-                    const monas = new maplibregl.Marker().setLngLat([106.827141, -6.175480]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Monas")).addTo(map);
-                    const gambir = new maplibregl.Marker().setLngLat([106.83069706222626, -6.176791322269103, ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("St. Gambir")).addTo(map);
-                    const istiqlal = new maplibregl.Marker().setLngLat([106.8317445774833, -6.171109491700247,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Masjid Istiqlal")).addTo(map);
-                    const bundaranhi = new maplibregl.Marker().setLngLat([106.8231702624352, -6.194763302876742, ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Bundaran HI")).addTo(map);
-                    const ptanahabang = new maplibregl.Marker().setLngLat([106.8154448958971, -6.187192610309246,   ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Pasar Tanah Abang")).addTo(map);
-                    const kemenhan = new maplibregl.Marker().setLngLat([106.82136373859709 , -6.176855298771626,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Kementerian Pertahanan")).addTo(map);
-                    // const istiqlal = new maplibregl.Marker().setLngLat([106.8317445774833, -6.171109491700247,  ]).setPopup(new maplibregl.Popup({closeOnClick: false, closeButton: false}).setHTML("Masjid Istiqlal")).addTo(map);
-                    monas.togglePopup();
-                    gambir.togglePopup();
-                    istiqlal.togglePopup()
-                    bundaranhi.togglePopup()
-                    ptanahabang.togglePopup()
-                    kemenhan.togglePopup()
+
+                    monas.addTo(map).togglePopup()
+                    gambir.addTo(map).togglePopup()
+                    istiqlal.addTo(map).togglePopup()
+                    bundaranhi.addTo(map).togglePopup()
+                    ptanahabang.addTo(map).togglePopup()
+                    kemenhan.addTo(map).togglePopup()
+                    
                     // Add 3d buildings and remove label layers to enhance the map
                     var layers = map.getStyle().layers;
                     for (var i = 0; i < layers.length; i++) {
@@ -196,6 +300,23 @@
                     }
                     });
                     }); 
+
+
+
+                    function clicked(){
+                        rotate = false
+                        console.log('clicked!')
+                        monas.remove();
+                        gambir.remove();
+                        istiqlal.remove()
+                        bundaranhi.remove()
+                        ptanahabang.remove()
+                        kemenhan.remove()
+                        
+                    }
+
+
+                    // map.setCenter([106.80330384160426, -6.219849546493964, ]);
         </script>
 </body>
 </html>
